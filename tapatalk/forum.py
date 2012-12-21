@@ -1,3 +1,5 @@
+from djangobb_forum.models import *
+
 def get_config():
     return {
         'version': 'dev',
@@ -11,10 +13,34 @@ def get_config():
 
 
 def get_forum(return_description=False, forum_id=''):
-    return [{
-            'forum_id': '1',
-            'forum_name': 'Je moeder!',
+    # get categories
+    categories = Category.objects.all()
+
+    # this will hold the result
+    data = []
+
+    # loop through categories, and create result
+    for category in categories:
+        cat = {
+            'forum_id': category.id,
+            'forum_name': category.name,
             'parent_id': '-1',
-            'sub_only': False,
-        },
-    ]
+            'sub_only': True,
+            'child': [],
+        }
+
+        # add all child forums to category
+        fora = Forum.objects.filter(category=category)
+        for forum in fora:
+            f = {
+                'forum_id': forum.id,
+                'forum_name': forum.name,
+                'parent_id': category.id,
+                'sub_only': False,
+                'child': [],
+            }
+
+            cat['child'].append(f)
+
+        data.append(cat)
+    return data
