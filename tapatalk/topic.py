@@ -1,10 +1,10 @@
-from djangobb_forum.models import *
+from util import *
 
 def get_unread_topic(start_num, last_num, search_id='', filters=[]):
     return {
         'result': True,
         'total_topic_num': 0,
-        'search_id': search_id,
+        # 'search_id': search_id,
         'topics': [],
         'forum_id': '',
     }
@@ -14,24 +14,48 @@ def get_latest_topic(start_num, last_num, search_id='', filters=[]):
     topics = Topic.objects.all()[:10]
     data = {
         'result': True,
-        'total_topic_num': 1,
-        'search_id': search_id,
+        'search_id': 'foobar',
         'topics': [],
     }
 
     for topic in topics:
-        t = {
-            'forum_id': topic.forum.id,
-            'forum_name': topic.forum.name,
-            'topic_id': topic.id,
-            'topic_title': topic.name,
-            'post_author_name': topic.last_post.user.username,
-            'post_author_id': topic.last_post.user.id,
-            'can_subscribe': False,
-        }
-        data['topics'].append(t)
+        data['topics'].append(topic.as_tapatalk())
 
+    data['total_topic_num'] = len(data['topics'])
+    data['total_unread_num'] = 0
     return data
+
+# TODO: Pagination
+def get_participated_topic(user_name='', start_num=0, last_num=None, search_id='', user_id=''):
+    user = User.objects.get(username=user_name)
+    posts = Post.objects.filter(user=user)
+
+    topics = []
+    tmp = []
+    for post in posts:
+        if post.topic.id not in tmp:
+            tmp.append(post.topic.id)
+            data = {
+                'forum_id': post.topic.forum.id,
+                'forum_name': post.topic.forum.name,
+                'topic_id': post.topic.id,
+                'topic_title': post.topic.name,
+                'post_author_id': post.user.id,
+                'post_author_name': post.user.username,
+                'post_time': post.created.isoformat() + '+01:00',
+                'reply_number': post.topic.post_count,
+                'new_post': False,  # TODO: make me work
+                'view_number': post.topic.views,
+
+            }
+
+    return {
+        'result': True,
+        'search_id': search_id,
+        'total_topic_num': len(topics),
+        'total_unread_num': 0,  # TODO: make me work
+        'topics': topics,
+    }
 
 
 def get_topic(forum_id, start_num=0, last_num=0, mode='DATE'):

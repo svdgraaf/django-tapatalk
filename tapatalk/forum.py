@@ -1,14 +1,23 @@
-from djangobb_forum.models import *
+from util import *
+import base64
 
 def get_config():
     return {
         'version': 'dev',
-        'api_level': '3',
+        'api_level': 3,  # level 3 for now
         'is_open': True,
         'guest_okay': True,
-        'inbox_stat': '0',  # forum.inbox_stat
-        'can_unread': '0',
-        'get_latest_topic': '1',
+        'inbox_stat': False,  # forum.inbox_stat
+        'can_unread': False,
+        'get_latest_topic': True,
+        'sys_version': '4.2.0',
+        'support_md5': False,
+        'goto_unread': True,
+        'subscribe_forum': True,
+        'disable_subscribe_forum': False,
+        'get_id_by_url': True,
+        'anonymous': True,
+
     }
 
 
@@ -44,3 +53,14 @@ def get_forum(return_description=False, forum_id=''):
 
         data.append(cat)
     return data
+
+
+def search_topic(search_string, start_num=0, last_num=None, search_id=''):
+    t = Topic.objects.filter(name__icontains=search_string)
+    topics = []
+    for topic in t:
+        topics.append(topic.as_tapatalk())
+    return {
+        'total_topic_num': len(topics),
+        'topics': topics,
+    }
