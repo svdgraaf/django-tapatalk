@@ -11,7 +11,7 @@ def get_config():
         'can_unread': False,
         'get_latest_topic': True,
         'sys_version': '4.2.0',
-        'support_md5': True,
+        # 'support_md5': True,
         'goto_unread': True,
         'subscribe_forum': False,
         'disable_subscribe_forum': False,
@@ -20,8 +20,15 @@ def get_config():
         'reg_url': 'register.php',
         'forum_signature': False,
         'get_forum': True,
-        'get_participated_forum': False,
+        # 'get_participated_forum': False,
         'user_id': True,
+        'disable_bbcode': False,
+        # 'forum_signature': True,
+        # 'allow_moderate': True,
+        # 'subscribe_topic_mode': '0,1,2,3',
+        # 'subscribe_forum_mode': '0,2,3',
+
+
     }
 
 
@@ -51,6 +58,7 @@ def get_forum(return_description=False, forum_id=''):
                 'parent_id': category.id,
                 'sub_only': False,
                 'child': [],
+                'can_post': True,
             }
 
             cat['child'].append(f)

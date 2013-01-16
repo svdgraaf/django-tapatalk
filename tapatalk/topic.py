@@ -13,7 +13,7 @@ def get_latest_topic(start_num, last_num, search_id='', filters=[]):
     topics = Topic.objects.all()[:2]
     data = {
         'result': True,
-        'search_id': '1127401',
+        # 'search_id': '1127401',
         'topics': [],
     }
 
@@ -76,18 +76,19 @@ def get_topic(forum_id, start_num=0, last_num=0, mode='DATE'):
         'topics': [],
     }
     for topic in topics:
-        t = {
-            'forum_id': forum.id,
-            'topic_id': topic.id,
-            'topic_title': topic.name,
-            'topic_author_id': topic.user.id,
-            'topic_author_name': topic.user.username,
-            'last_reply_time': topic.last_post.created.isoformat(),
-            'reply_number': topic.post_count,
-            'view_number': topic.views,
-            'closed': topic.closed,
+        # t = {
+        #     'forum_id': forum.id,
+        #     'topic_id': topic.id,
+        #     'topic_title': topic.name,
+        #     'topic_author_id': topic.user.id,
+        #     'topic_author_name': topic.user.username,
+        #     'last_reply_time': topic.last_post.created.isoformat(),
+        #     'reply_number': topic.post_count,
+        #     'view_number': topic.views,
+        #     'closed': topic.closed,
+        #     'can_post': true,
 
-        }
-        data['topics'].append(t)
+        # }
+        data['topics'].append(topic.as_tapatalk())
 
     return data

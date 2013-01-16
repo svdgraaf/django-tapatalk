@@ -13,7 +13,7 @@ XMLRPC_DEFAULT_METHODS = (
     ('tapatalk.topic.get_latest_topic', 'get_latest_topic'),
     ('tapatalk.topic.get_topic', 'get_topic'),
 
-    ('tapatalk.comment.get_thread', 'get_thread'),
+    ('tapatalk.post.get_thread', 'get_thread'),
 )
 
 try:

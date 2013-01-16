@@ -13,7 +13,6 @@ def login(login_name=None, password=None, anonymous=False, push='1'):
 
     # we have a username and password, let's try to login
     user = authenticate(username=login_name, password=password)
-    user = User.objects.get(pk=1)
 
     if user is not None:
         # we only deal with active users

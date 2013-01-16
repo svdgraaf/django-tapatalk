@@ -15,6 +15,7 @@ def as_tapatalk(self):
         'last_reply_author_id': self.last_post.user.id,
         'reply_number': self.post_count,
         'view_number': self.views,
+        'can_post': True,
         # 'can_subscribe': False,  # TODO: make me work
         # 'new_post': False,  # TODO: make me work
         # 'attachment': 0,
