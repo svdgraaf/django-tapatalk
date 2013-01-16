@@ -4,17 +4,16 @@ def get_unread_topic(start_num, last_num, search_id='', filters=[]):
     return {
         'result': True,
         'total_topic_num': 0,
-        # 'search_id': search_id,
         'topics': [],
         'forum_id': '',
     }
 
 
 def get_latest_topic(start_num, last_num, search_id='', filters=[]):
-    topics = Topic.objects.all()[:10]
+    topics = Topic.objects.all()[:2]
     data = {
         'result': True,
-        'search_id': 'foobar',
+        'search_id': '1127401',
         'topics': [],
     }
 
@@ -32,22 +31,22 @@ def get_participated_topic(user_name='', start_num=0, last_num=None, search_id='
 
     topics = []
     tmp = []
-    for post in posts:
-        if post.topic.id not in tmp:
-            tmp.append(post.topic.id)
-            data = {
-                'forum_id': post.topic.forum.id,
-                'forum_name': post.topic.forum.name,
-                'topic_id': post.topic.id,
-                'topic_title': post.topic.name,
-                'post_author_id': post.user.id,
-                'post_author_name': post.user.username,
-                'post_time': post.created.isoformat() + '+01:00',
-                'reply_number': post.topic.post_count,
-                'new_post': False,  # TODO: make me work
-                'view_number': post.topic.views,
+    # for post in posts:
+    #     if post.topic.id not in tmp:
+    #         tmp.append(post.topic.id)
+    #         data = {
+    #             'forum_id': post.topic.forum.id,
+    #             'forum_name': post.topic.forum.name,
+    #             'topic_id': post.topic.id,
+    #             'topic_title': post.topic.name,
+    #             'post_author_id': post.user.id,
+    #             'post_author_name': post.user.username,
+    #             'post_time': post.created.isoformat() + '+01:00',
+    #             'reply_number': post.topic.post_count,
+    #             'new_post': False,  # TODO: make me work
+    #             'view_number': post.topic.views,
 
-            }
+    #         }
 
     return {
         'result': True,

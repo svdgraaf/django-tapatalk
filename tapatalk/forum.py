@@ -3,7 +3,7 @@ import base64
 
 def get_config():
     return {
-        'version': 'dev',
+        'version': 'vb40_3.9.4',
         'api_level': 3,  # level 3 for now
         'is_open': True,
         'guest_okay': True,
@@ -11,13 +11,17 @@ def get_config():
         'can_unread': False,
         'get_latest_topic': True,
         'sys_version': '4.2.0',
-        'support_md5': False,
+        'support_md5': True,
         'goto_unread': True,
-        'subscribe_forum': True,
+        'subscribe_forum': False,
         'disable_subscribe_forum': False,
-        'get_id_by_url': True,
+        'get_id_by_url': False,
         'anonymous': True,
-
+        'reg_url': 'register.php',
+        'forum_signature': False,
+        'get_forum': True,
+        'get_participated_forum': False,
+        'user_id': True,
     }
 
 
