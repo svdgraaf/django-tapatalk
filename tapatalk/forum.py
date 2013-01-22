@@ -1,7 +1,7 @@
 from util import *
 import base64
 
-def get_config():
+def get_config(request):
     return {
         'version': 'vb40_3.9.4',
         'api_level': 3,  # level 3 for now
@@ -12,6 +12,7 @@ def get_config():
         'get_latest_topic': True,
         'sys_version': '4.2.0',
         # 'support_md5': True,
+        'anonymous': True,
         'goto_unread': True,
         'subscribe_forum': False,
         'disable_subscribe_forum': False,
@@ -23,6 +24,10 @@ def get_config():
         # 'get_participated_forum': False,
         'user_id': True,
         'disable_bbcode': False,
+        'get_topic_status': True,
+        'get_forum_status': True,
+        'report_post': True,
+        'disable_bbcode': False,
         # 'forum_signature': True,
         # 'allow_moderate': True,
         # 'subscribe_topic_mode': '0,1,2,3',
@@ -32,7 +37,7 @@ def get_config():
     }
 
 
-def get_forum(return_description=False, forum_id=''):
+def get_forum(request, return_description=False, forum_id=''):
     # get categories
     categories = Category.objects.all()
 
@@ -67,7 +72,7 @@ def get_forum(return_description=False, forum_id=''):
     return data
 
 
-def search_topic(search_string, start_num=0, last_num=None, search_id=''):
+def search_topic(request, search_string, start_num=0, last_num=None, search_id=''):
     t = Topic.objects.filter(name__icontains=search_string)
     topics = []
     for topic in t:

@@ -1,6 +1,6 @@
 from util import *
 
-def get_unread_topic(start_num, last_num, search_id='', filters=[]):
+def get_unread_topic(request, start_num, last_num, search_id='', filters=[]):
     return {
         'result': True,
         'total_topic_num': 0,
@@ -9,7 +9,7 @@ def get_unread_topic(start_num, last_num, search_id='', filters=[]):
     }
 
 
-def get_latest_topic(start_num, last_num, search_id='', filters=[]):
+def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
     topics = Topic.objects.all()[:2]
     data = {
         'result': True,
@@ -25,7 +25,7 @@ def get_latest_topic(start_num, last_num, search_id='', filters=[]):
     return data
 
 # TODO: Pagination
-def get_participated_topic(user_name='', start_num=0, last_num=None, search_id='', user_id=''):
+def get_participated_topic(request, user_name='', start_num=0, last_num=None, search_id='', user_id=''):
     user = User.objects.get(username=user_name)
     posts = Post.objects.filter(user=user)
 
@@ -57,7 +57,7 @@ def get_participated_topic(user_name='', start_num=0, last_num=None, search_id='
     }
 
 
-def get_topic(forum_id, start_num=0, last_num=0, mode='DATE'):
+def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
     topics = Topic.objects.filter(forum_id=forum_id)
     forum = Forum.objects.get(pk=forum_id)
 
@@ -72,23 +72,44 @@ def get_topic(forum_id, start_num=0, last_num=0, mode='DATE'):
         'forum_id': forum_id,
         'forum_name': forum.name,
         'can_post': True,
+        'can_upload': False,
         'require_prefix': False,
         'topics': [],
     }
     for topic in topics:
-        # t = {
-        #     'forum_id': forum.id,
-        #     'topic_id': topic.id,
-        #     'topic_title': topic.name,
-        #     'topic_author_id': topic.user.id,
-        #     'topic_author_name': topic.user.username,
-        #     'last_reply_time': topic.last_post.created.isoformat(),
-        #     'reply_number': topic.post_count,
-        #     'view_number': topic.views,
-        #     'closed': topic.closed,
-        #     'can_post': true,
+        t = {
+            'forum_id': forum.id,
+            'topic_id': topic.id,
+            'topic_title': topic.name,
+            'topic_author_id': topic.user.id,
+            'topic_author_name': topic.user.username,
+            'last_reply_time': topic.last_post.created.isoformat(),
+            'reply_number': topic.post_count,
+            'view_number': topic.views,
+            'closed': topic.closed,
+            'can_post': True,
 
-        # }
+        }
         data['topics'].append(topic.as_tapatalk())
 
     return data
+
+
+def new_topic(request, forum_id, subject, text_body, prefix_id='', attachment_id_array=[], group_id=''):
+    from djangobb_forum.models import Topic, Post
+    t = Topic()
+    t.forum_id = forum_id
+    t.name = subject
+    t.user_id = 1
+    t.save()
+
+    p = Post()
+    p.user_id = 1
+    p.topic_id = t.id
+    p.body = str(text_body)
+    p.save()
+
+    return {
+        'result': True,
+        'topic_id': t.id,
+    }

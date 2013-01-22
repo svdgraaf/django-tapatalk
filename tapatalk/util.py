@@ -9,13 +9,14 @@ def as_tapatalk(self):
         'topic_id': str(self.id),
         'topic_title': self.name,
         'prefix': '',
-        'post_author_id': str(self.last_post.user.id),
-        'post_author_name': self.last_post.user.username,
-        'last_reply_author_name': self.last_post.user.username,
-        'last_reply_author_id': self.last_post.user.id,
+        # 'post_author_id': str(self.user.id),
+        # 'post_author_name': self.user.username,
+        # 'last_reply_author_name': self.last_post.user.username,
+        # 'last_reply_author_id': self.last_post.user.id,
         'reply_number': self.post_count,
         'view_number': self.views,
         'can_post': True,
+        'is_approved': True,
         # 'can_subscribe': False,  # TODO: make me work
         # 'new_post': False,  # TODO: make me work
         # 'attachment': 0,

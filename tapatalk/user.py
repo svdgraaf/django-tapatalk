@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 import base64
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 
-def login(login_name=None, password=None, anonymous=False, push='1'):
+
+def login(request, login_name=None, password=None, anonymous=False, push='1'):
     if login_name == None and password == None:
         return {
             'result': False,
@@ -22,6 +24,8 @@ def login(login_name=None, password=None, anonymous=False, push='1'):
 
             for group in groups:
                 groups.append(group.id)
+
+            auth_login(request, user)
 
             return {
                 'result': True,

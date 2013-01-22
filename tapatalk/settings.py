@@ -12,6 +12,7 @@ XMLRPC_DEFAULT_METHODS = (
     ('tapatalk.topic.get_participated_topic', 'get_participated_topic'),
     ('tapatalk.topic.get_latest_topic', 'get_latest_topic'),
     ('tapatalk.topic.get_topic', 'get_topic'),
+    ('tapatalk.topic.new_topic', 'new_topic'),
 
     ('tapatalk.post.get_thread', 'get_thread'),
 )
