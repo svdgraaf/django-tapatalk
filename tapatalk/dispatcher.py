@@ -21,4 +21,7 @@ class TapatalkXMLRPCDispatcher(DjangoXMLRPCDispatcher):
                 kwargs['django_kwargs'] = django_kwargs
             return func(request, *params, **kwargs)
 
-        return DjangoXMLRPCDispatcher._marshaled_dispatch(self, request.raw_post_data, dispatch_method)
+        # Tapatalk sends out bad formatted booleans... *sigh*
+        body = request.raw_post_data.replace('<boolean>true</boolean>', '<boolean>1</boolean>')
+
+        return DjangoXMLRPCDispatcher._marshaled_dispatch(self, body, dispatch_method)

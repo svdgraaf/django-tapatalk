@@ -24,6 +24,11 @@ def handle_xmlrpc(request, *args, **kwargs):
         try:
             response = HttpResponse(content_type='text/xml')
             response.write(xmlrpcdispatcher._marshaled_dispatch(request, args, kwargs))
+            if request.user and request.user.is_authenticated():
+                response['Mobiquo_is_login'] = 'true'
+            else:
+                response['Mobiquo_is_login'] = 'false'
+
             if DEBUG:
                 print response
             return response
