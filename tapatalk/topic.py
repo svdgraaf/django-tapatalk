@@ -26,7 +26,7 @@ def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
 
 # TODO: Pagination
 def get_participated_topic(request, user_name='', start_num=0, last_num=None, search_id='', user_id=''):
-    user = User.objects.get(username=user_name)
+    user = request.user
     posts = Post.objects.filter(user=user)
 
     topics = []
@@ -100,7 +100,7 @@ def new_topic(request, forum_id, subject, text_body, prefix_id='', attachment_id
     t = Topic()
     t.forum_id = forum_id
     t.name = subject
-    t.user_id = 1
+    t.user_id = request.user
     t.save()
 
     p = Post()
