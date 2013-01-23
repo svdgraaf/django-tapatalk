@@ -1,9 +1,9 @@
 from xmlrpclib import ServerProxy
 from tests.transport import SessionTransport
 
-HOST = 'http://127.0.0.1:5000/forum/mobiquo/mobiquo.php'
-USERNAME = 'svdgraaf'
-PASSWORD = 'deospray'
+HOST = 'http://androidworld.staging.hub.nl/forum/mobiquo/mobiquo.php'
+USERNAME = 'tapatalk'
+PASSWORD = 'foobar'
 
 t = SessionTransport()
 server = ServerProxy(HOST, verbose=True, transport=t)
