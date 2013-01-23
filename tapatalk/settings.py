@@ -15,6 +15,7 @@ XMLRPC_DEFAULT_METHODS = (
     ('tapatalk.topic.new_topic', 'new_topic'),
 
     ('tapatalk.post.get_thread', 'get_thread'),
+    ('tapatalk.post.reply_post', 'reply_post'),
 )
 
 try:
