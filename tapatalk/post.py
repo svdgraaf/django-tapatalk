@@ -46,7 +46,8 @@ def reply_post(request, forum_id, topic_id, subject='', text_body=''):
 
     p = Post()
     t = Topic.objects.get(pk=topic_id)
-    p.user = request.user
+    print request.user
+    p.user_id = request.user.id
     p.body = text_body
     p.topic = t
     p.save()
