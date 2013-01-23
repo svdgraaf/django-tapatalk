@@ -1,20 +1,16 @@
-from xmlrpclib import Transport
-from xmlrpclib import *
+from xmlrpclib import Transport, ProtocolError
 
 # inspired from http://blog.godson.in/2010/09/how-to-make-python-xmlrpclib-client.html
-# and updated for newer python versions
-
+# and updated for newer python versions and xmlrpclib
 
 class SessionTransport(Transport):
     def __init__(self):
         Transport.__init__(self, use_datetime=0)
-      
-    #def request(self, r):pass
-    session = ''
-    def request(self, host, handler, request_body, verbose=0):
-      
-        # issue XML-RPC request
 
+    session = ''
+
+    def request(self, host, handler, request_body, verbose=0):
+        # issue XML-RPC request
         h = self.make_connection(host)
         print h
         if verbose:
@@ -25,6 +21,7 @@ class SessionTransport(Transport):
         self.send_user_agent(h)
         self.send_content(h, request_body)
 
+        # get the response headres
         response = h.getresponse()
         headers = response.getheaders()
         errcode = response.status
@@ -44,11 +41,6 @@ class SessionTransport(Transport):
                 )
 
         self.verbose = verbose
-
-        try:
-            sock = h._conn.sock
-        except AttributeError:
-            sock = None
 
         return self.parse_response(response)
 
