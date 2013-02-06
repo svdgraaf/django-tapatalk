@@ -50,9 +50,17 @@ def get_inbox_stat(request):
     except:
         topics = []
 
+    # TODO: check for django_messages
+    from django_messages.models import Message
+    box = Message.objects.inbox_for(request.user)
+    unread = 0
+    for msg in box:
+        if msg.read_at == None:
+            unread += 1
+
     return {
-        'inbox_unread_count': 0,
-        'subscribed_topic_unread_count': 10,
+        'inbox_unread_count': unread,
+        'subscribed_topic_unread_count': len(topics),
     }
 
 

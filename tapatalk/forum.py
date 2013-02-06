@@ -8,11 +8,10 @@ def get_config(request):
         'api_level': '3',  # level 3 for now
         'is_open': True,
         'guest_okay': True,
-        'inbox_stat': '0',  # forum.inbox_stat
+        'inbox_stat': True,  # forum.inbox_stat
         'can_unread': False,
         'get_latest_topic': True,
         'sys_version': '4.2.0',
-        # 'support_md5': True,
         'anonymous': True,
         'goto_unread': True,
         'subscribe_forum': False,

@@ -24,6 +24,12 @@ XMLRPC_DEFAULT_METHODS = (
     ('tapatalk.post.save_raw_post', 'save_raw_post'),
 
     ('tapatalk.subscription.get_subscribed_topic', 'get_subscribed_topic'),
+
+    ('tapatalk.pm.get_box_info', 'get_box_info'),
+    ('tapatalk.pm.get_box', 'get_box'),
+    ('tapatalk.pm.get_message', 'get_message'),
+    ('tapatalk.pm.delete_message', 'delete_message'),
+    ('tapatalk.pm.create_message', 'create_message'),
 )
 
 try:

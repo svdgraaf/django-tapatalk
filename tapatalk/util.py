@@ -1,5 +1,6 @@
 from djangobb_forum.models import *
 from django.core.cache import cache
+from django_messages.models import Message
 import xmlrpclib
 from django.contrib.auth.models import User
 
@@ -83,6 +84,41 @@ def post_as_tapatalk(self):
     return data
 
 
+def message_as_tapatalk(self):
+    state = 'Unread'
+    if self.read_at:
+        state = 'Read'
+    if self.replied_at:
+        state = 'Replied'
+
+    # try to get online status
+    online = cache.get('djangobb_user%d' % self.sender.id)
+    if online == None:
+        online = False
+
+    data = {
+        'msg_id': self.id,
+        'msg_state': state,
+        'sent_date': xmlrpclib.DateTime(self.sent_at),
+        'msg_from_id': self.sender.id,
+        'msg_from': xmlrpclib.Binary(self.sender.username),
+        'icon_url': get_avatar_for_user(self.sender),
+        'msg_subject': xmlrpclib.Binary(self.subject),
+        'short_content': xmlrpclib.Binary(self.body),
+        'is_online': online,
+        'text_body': xmlrpclib.Binary(self.body),
+        'msg_to': [
+            {
+                'user_id': self.recipient.id,
+                'username': xmlrpclib.Binary(self.recipient.username),
+            }
+        ],
+    }
+
+    return data
+
+
 # ugh, monkey patching
 Topic.as_tapatalk = topic_as_tapatalk
 Post.as_tapatalk = post_as_tapatalk
+Message.as_tapatalk = message_as_tapatalk
