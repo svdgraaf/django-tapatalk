@@ -10,9 +10,6 @@ def login(request, login_name=None, password=None, anonymous=False, push='1'):
             'result': False,
         }
 
-    # login_name = base64.b64decode(login_name)
-    # password = base64.b64decode(password)
-
     # we have a username and password, let's try to login
     user = authenticate(username=login_name, password=password)
 
@@ -66,10 +63,7 @@ def get_user_info(request, username='', user_id=None):
     if online == None:
         online = False
 
-    # fix this to correct call from django_bb
-    avatar = user.profile.get_avatar()
-    if avatar == None:
-        avatar = ''
+    avatar = get_avatar_for_user(user)
 
     # get the last post date
     last_post = ''

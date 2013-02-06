@@ -1,4 +1,5 @@
 from djangobb_forum.models import *
+from django.core.cache import cache
 import xmlrpclib
 from django.contrib.auth.models import User
 
@@ -13,10 +14,17 @@ def get_user(username):
     return user
 
 
-def topic_as_tapatalk(self):
-    avatar = self.user.profile.get_avatar()
+def get_avatar_for_user(user):
+    # fix this to correct call from django_bb
+    avatar = user.profile.get_avatar()
     if avatar == None:
         avatar = ''
+
+    return avatar
+
+
+def topic_as_tapatalk(self):
+    avatar = get_avatar_for_user(self.user)
 
     data = {
         'forum_id': str(self.forum.id),
@@ -46,12 +54,9 @@ def topic_as_tapatalk(self):
 
 
 def post_as_tapatalk(self):
-    avatar = self.user.profile.get_avatar()
-    if avatar == None:
-        avatar = ''
+    avatar = get_avatar_for_user(self.user)
 
     # try to get online status
-    from django.core.cache import cache
     online = cache.get('djangobb_user%d' % self.user.id)
     if online == None:
         online = False

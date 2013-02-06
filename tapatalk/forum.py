@@ -1,5 +1,6 @@
 from util import *
-import base64
+import xmlrpclib
+
 
 def get_config(request):
     return {
@@ -81,3 +82,28 @@ def search_topic(request, search_string, start_num=0, last_num=None, search_id='
         'total_topic_num': len(topics),
         'topics': topics,
     }
+
+
+def get_online_users(request, page=0, perpage=20, id=None, area='forum'):
+    users_cached = cache.get('djangobb_users_online', {})
+    users_online = users_cached and User.objects.filter(id__in = users_cached.keys()) or []
+    guests_cached = cache.get('djangobb_guests_online', {})
+
+    data = {
+        'member_count': len(users_cached),
+        'guest_count': len(guests_cached),
+        'list': [],
+    }
+
+    for user in users_online:
+        avatar = get_avatar_for_user(user)
+        u = {
+            'user_id': user.id,
+            'username': xmlrpclib.Binary(user.username),
+            'user_name': xmlrpclib.Binary(user.username),
+            'icon_url': avatar,
+            'display_text': '',
+        }
+        data['list'].append(u)
+
+    return data
