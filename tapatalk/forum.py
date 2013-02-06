@@ -4,7 +4,7 @@ import base64
 def get_config(request):
     return {
         'version': 'vb40_3.9.4',
-        'api_level': 3,  # level 3 for now
+        'api_level': '3',  # level 3 for now
         'is_open': True,
         'guest_okay': True,
         'inbox_stat': '0',  # forum.inbox_stat
