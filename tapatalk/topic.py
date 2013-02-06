@@ -1,4 +1,6 @@
+import xmlrpclib
 from util import *
+
 
 def get_unread_topic(request, start_num, last_num, search_id='', filters=[]):
     return {
@@ -17,12 +19,13 @@ def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
         'topics': [],
     }
 
-    for topic in topics:
-        data['topics'].append(topic.as_tapatalk())
+    for t in topics:
+        data['topics'].append(t.as_tapatalk())
 
     data['total_topic_num'] = len(data['topics'])
     data['total_unread_num'] = 0
     return data
+
 
 # TODO: Pagination
 def get_participated_topic(request, user_name='', start_num=0, last_num=None, search_id='', user_id=''):
@@ -31,22 +34,11 @@ def get_participated_topic(request, user_name='', start_num=0, last_num=None, se
 
     topics = []
     tmp = []
-    # for post in posts:
-    #     if post.topic.id not in tmp:
-    #         tmp.append(post.topic.id)
-    #         data = {
-    #             'forum_id': post.topic.forum.id,
-    #             'forum_name': post.topic.forum.name,
-    #             'topic_id': post.topic.id,
-    #             'topic_title': post.topic.name,
-    #             'post_author_id': post.user.id,
-    #             'post_author_name': post.user.username,
-    #             'post_time': post.created.isoformat() + '+01:00',
-    #             'reply_number': post.topic.post_count,
-    #             'new_post': False,  # TODO: make me work
-    #             'view_number': post.topic.views,
-
-    #         }
+    for post in posts:
+        if post.topic.id not in tmp:
+                t = post.topic
+                topics.append(t.as_tapatalk())
+                tmp.append(t.id)
 
     return {
         'result': True,
@@ -70,27 +62,15 @@ def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
     data = {
         'total_topic_num': forum.topic_count,
         'forum_id': forum_id,
-        'forum_name': forum.name,
+        'forum_name': xmlrpclib.Binary(forum.name),
         'can_post': True,
         'can_upload': False,
         'require_prefix': False,
         'topics': [],
     }
     for topic in topics:
-        t = {
-            'forum_id': forum.id,
-            'topic_id': topic.id,
-            'topic_title': topic.name,
-            'topic_author_id': topic.user.id,
-            'topic_author_name': topic.user.username,
-            'last_reply_time': topic.last_post.created.isoformat(),
-            'reply_number': topic.post_count,
-            'view_number': topic.views,
-            'closed': topic.closed,
-            'can_post': True,
-
-        }
-        data['topics'].append(topic.as_tapatalk())
+        t = topic.as_tapatalk()
+        data['topics'].append(t)
 
     return data
 

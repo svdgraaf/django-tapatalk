@@ -21,7 +21,7 @@ def get_config(request):
         'reg_url': 'register.php',
         'forum_signature': False,
         'get_forum': True,
-        # 'get_participated_forum': False,
+        'get_participated_forum': True,
         'user_id': True,
         'disable_bbcode': False,
         'get_topic_status': True,
