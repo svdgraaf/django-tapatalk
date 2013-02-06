@@ -4,6 +4,7 @@ from util import *
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 
 
+# See: http://tapatalk.com/api/api_section.php?id=2#login
 def login(request, login_name=None, password=None, anonymous=False, push='1'):
     if login_name == None and password == None:
         return {
@@ -37,6 +38,7 @@ def login(request, login_name=None, password=None, anonymous=False, push='1'):
     }
 
 
+# See: http://tapatalk.com/api/api_section.php?id=2#get_inbox_stat
 def get_inbox_stat(request):
     topics = Topic.objects.all()
     try:
@@ -54,6 +56,7 @@ def get_inbox_stat(request):
     }
 
 
+# See: http://tapatalk.com/api/api_section.php?id=2#get_user_info
 def get_user_info(request, username='', user_id=None):
     user = get_user(username)
 
@@ -93,6 +96,7 @@ def get_user_info(request, username='', user_id=None):
     return data
 
 
+# See: http://tapatalk.com/api/api_section.php?id=2#get_user_topic
 def get_user_topic(request, username='', user_id=None):
     user = get_user(username)
 
@@ -103,6 +107,7 @@ def get_user_topic(request, username='', user_id=None):
     return data
 
 
+# See: http://tapatalk.com/api/api_section.php?id=2#get_user_reply_post
 def get_user_reply_post(request, username='', user_id=None):
     user = get_user(username)
 
