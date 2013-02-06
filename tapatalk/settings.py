@@ -8,6 +8,8 @@ XMLRPC_DEFAULT_METHODS = (
     ('tapatalk.user.login', 'login'),
     ('tapatalk.user.get_inbox_stat', 'get_inbox_stat'),
     ('tapatalk.user.get_user_info', 'get_user_info'),
+    ('tapatalk.user.get_user_topic', 'get_user_topic'),
+    ('tapatalk.user.get_user_reply_post', 'get_user_reply_post'),
 
     ('tapatalk.topic.get_unread_topic', 'get_unread_topic'),
     ('tapatalk.topic.get_participated_topic', 'get_participated_topic'),

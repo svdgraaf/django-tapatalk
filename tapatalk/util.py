@@ -1,14 +1,30 @@
 from djangobb_forum.models import *
 import xmlrpclib
+from django.contrib.auth.models import User
+
+
+def get_user(username):
+    username = u"" + username.__str__()  # TODO: check this
+    username = username.replace("\x00", '')  # ugh, something is messing up our strings
+
+    # username = "" + str(username)
+    user = User.objects.get(username=username)
+
+    return user
 
 
 def topic_as_tapatalk(self):
+    avatar = self.user.profile.get_avatar()
+    if avatar == None:
+        avatar = ''
+
     data = {
         'forum_id': str(self.forum.id),
         'forum_name': xmlrpclib.Binary(self.forum.name),
         'topic_id': str(self.id),
         'topic_title': xmlrpclib.Binary(self.name),
         'prefix': '',
+        'icon_url': avatar,
         'reply_number': self.post_count,
         'view_number': self.views,
         'can_post': True,
@@ -19,6 +35,7 @@ def topic_as_tapatalk(self):
     }
     if self.last_post:
         data.update({
+            'short_content': xmlrpclib.Binary(self.last_post.body),
             'last_reply_time': xmlrpclib.DateTime(self.last_post.created.isoformat()),
             'post_time': xmlrpclib.DateTime(self.last_post.created.isoformat()),
             'post_author_id': self.last_post.user.id,
@@ -43,12 +60,19 @@ def post_as_tapatalk(self):
         'post_id': str(self.id),
         'post_title': xmlrpclib.Binary(''),
         'post_content': self.body,
+        'forum_name': xmlrpclib.Binary(self.topic.forum.name),
+        'forum_id': self.topic.forum.id,
+        'topic_id': self.topic.id,
+        'topic_title': xmlrpclib.Binary(self.topic.name),
         'post_author_id': str(self.user.id),
         'post_author_name': xmlrpclib.Binary(self.user.username),
         'post_time': xmlrpclib.DateTime(self.created.isoformat()),
         'is_approved': True,
         'icon_url': avatar,
         'is_online': online,
+        'reply_number': self.topic.post_count,
+        'view_count': self.topic.views,
+        'short_content': xmlrpclib.Binary(self.body),
     }
 
     return data

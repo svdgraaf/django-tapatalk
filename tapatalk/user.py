@@ -1,9 +1,6 @@
 from django.contrib.auth import authenticate
-from django.utils.encoding import smart_unicode
-from django.contrib.auth.models import User
-import pytz
 import xmlrpclib
-from djangobb_forum.models import *
+from util import *
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 
 
@@ -61,14 +58,7 @@ def get_inbox_stat(request):
 
 
 def get_user_info(request, username='', user_id=None):
-    username = u"" + username.__str__()  # TODO: check this
-    username = username.replace("\x00", '')  # ugh, something is messing up our strings
-
-    # username = "" + str(username)
-    if user_id:
-        user = User.objects.get(pk=user_id)
-    else:
-        user = User.objects.get(username=username)
+    user = get_user(username)
 
     # try to get online status
     from django.core.cache import cache
@@ -81,12 +71,11 @@ def get_user_info(request, username='', user_id=None):
     if avatar == None:
         avatar = ''
 
+    # get the last post date
     last_post = ''
     try:
         last_post = user.forum_profile.last_post()
-        utc=pytz.UTC
-        last_post = utc.localize(last_post)
-        print last_post
+        # last_post = utc.localize(last_post)
     except:
         pass
 
@@ -107,6 +96,25 @@ def get_user_info(request, username='', user_id=None):
         'icon_url': avatar,
     }
 
-    print user.date_joined, data
+    return data
+
+
+def get_user_topic(request, username='', user_id=None):
+    user = get_user(username)
+
+    topics = user.topic_set.all()[:50]
+    data = []
+    for topic in topics:
+        data.append(topic.as_tapatalk())
+    return data
+
+
+def get_user_reply_post(request, username='', user_id=None):
+    user = get_user(username)
+
+    posts = user.posts.all()
+    data = []
+    for post in posts:
+        data.append(post.as_tapatalk())
 
     return data
