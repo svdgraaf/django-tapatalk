@@ -7,7 +7,7 @@ def get_config(request):
         'api_level': 3,  # level 3 for now
         'is_open': True,
         'guest_okay': True,
-        'inbox_stat': False,  # forum.inbox_stat
+        'inbox_stat': '0',  # forum.inbox_stat
         'can_unread': False,
         'get_latest_topic': True,
         'sys_version': '4.2.0',
@@ -15,7 +15,7 @@ def get_config(request):
         'anonymous': True,
         'goto_unread': True,
         'subscribe_forum': False,
-        'disable_subscribe_forum': False,
+        'disable_subscribe_forum': True,
         'get_id_by_url': False,
         'anonymous': True,
         'reg_url': 'register.php',
@@ -28,12 +28,12 @@ def get_config(request):
         'get_forum_status': True,
         'report_post': True,
         'disable_bbcode': False,
+        'conversation': '0',
+        'mark_pm_unread': '0',
         # 'forum_signature': True,
         # 'allow_moderate': True,
         # 'subscribe_topic_mode': '0,1,2,3',
         # 'subscribe_forum_mode': '0,2,3',
-
-
     }
 
 

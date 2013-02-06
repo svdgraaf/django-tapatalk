@@ -15,7 +15,6 @@ def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
     topics = Topic.objects.all()[:2]
     data = {
         'result': True,
-        # 'search_id': '1127401',
         'topics': [],
     }
 
@@ -68,8 +67,16 @@ def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
         'require_prefix': False,
         'topics': [],
     }
+
+    subscriptions = request.user.subscriptions.all()
+
     for topic in topics:
         t = topic.as_tapatalk()
+        if request.user.is_authenticated():
+            t['can_subscribe'] = True
+            if topic in subscriptions:
+                t['is_subscribed'] = True
+
         data['topics'].append(t)
 
     return data

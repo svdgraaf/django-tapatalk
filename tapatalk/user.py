@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 import base64
+from djangobb_forum.models import *
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 
 
@@ -40,8 +41,18 @@ def login(request, login_name=None, password=None, anonymous=False, push='1'):
     }
 
 
-def get_inbox_stat(pm_last_checked_time=None, subscribed_topic_last_checked_time=None):
+def get_inbox_stat(request):
+    topics = Topic.objects.all()
+    try:
+        last_read = PostTracking.objects.get(user=request.user).last_read
+    except PostTracking.DoesNotExist:
+        last_read = None
+    try:
+        topics = topics.filter(last_post__updated__gte=last_read).all()
+    except:
+        topics = []
+
     return {
         'inbox_unread_count': 0,
-        'subscribed_topic_unread_count': 0,
+        'subscribed_topic_unread_count': 10,
     }

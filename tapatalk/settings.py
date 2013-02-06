@@ -18,6 +18,8 @@ XMLRPC_DEFAULT_METHODS = (
     ('tapatalk.post.reply_post', 'reply_post'),
     ('tapatalk.post.get_raw_post', 'get_raw_post'),
     ('tapatalk.post.save_raw_post', 'save_raw_post'),
+
+    ('tapatalk.subscription.get_subscribed_topic', 'get_subscribed_topic'),
 )
 
 try:

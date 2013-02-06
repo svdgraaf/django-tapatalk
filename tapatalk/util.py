@@ -14,18 +14,19 @@ def topic_as_tapatalk(self):
         'view_number': self.views,
         'can_post': True,
         'is_approved': True,
-        'last_reply_time': xmlrpclib.DateTime(self.last_post.created),
-        'post_time': xmlrpclib.DateTime(self.last_post.created),
-        'time_string': self.last_post.created,
-
         'topic_author_id': self.user.id,
         'topic_author_name': xmlrpclib.Binary(self.user.username),
-        'post_author_id': self.last_post.user.id,
-        'post_author_name': xmlrpclib.Binary(self.last_post.user.username),
-
-
         'closed': self.closed,
     }
+    if self.last_post:
+        data.update({
+            'last_reply_time': xmlrpclib.DateTime(self.last_post.created),
+            'post_time': xmlrpclib.DateTime(self.last_post.created),
+            'time_string': self.last_post.created,
+            'post_author_id': self.last_post.user.id,
+            'post_author_name': xmlrpclib.Binary(self.last_post.user.username),
+        })
+
     return data
 
 
@@ -38,6 +39,7 @@ def post_as_tapatalk(self):
         'post_author_name': xmlrpclib.Binary(self.user.username),
         'post_time': xmlrpclib.DateTime(self.created),
         'is_approved': True,
+        'icon_url': self.user.profile.get_avatar()
     }
 
     return data
