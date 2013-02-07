@@ -15,13 +15,13 @@ Installation
 ============
 The easiest way is via pip:
 
-  $ pip install django-tapatalk
+  pip install django-tapatalk
 
 Or you could retrieve the source from github or pypy, and install it via the setup.py.
 
 Usage
 =====
-Register **tapatalk** in your INSTALLED_APPS section of your project' settings, and add these urls to your installation:
+Register **tapatalk** in your INSTALLED_APPS section of your project' settings, and add these urls to your installation::
 
     (r'^tapatalk/', include('tapatalk.urls')),
     (r'^forum/mobiquo/', include('tapatalk.urls')),
@@ -32,7 +32,7 @@ Customization
 =============
 If you want to customize some methods, for instance, your login procedure, you define your own methods. Every method gets the request variable as first argument, and it's recommended that you use the standard request.user for referencing the current logged in user.
 
-You can register extra methods or custom methods via the TAPATALK_METHODS variable:
+You can register extra methods or custom methods via the TAPATALK_METHODS variable::
 
   TAPATALK_METHODS = (
     ('my.awesome.login', 'login'),
@@ -66,6 +66,7 @@ Features
 - User posts, user topics
 
 Missing:
+========
 - Mark all as read
 - Pagination(!)
 - Subscriptions (Forum) (djangobb doesn't support forum subscriptions afaik)
