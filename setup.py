@@ -1,22 +1,21 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-# try:
-#     README = open('README.md').read()
-# except:
-#     README = None
+try:
+    README = open('README.rst').read()
+except:
+    README = None
 
 # try: 
 #     LICENSE = open('LICENSE.txt').read()
 # except: 
 #     LICENSE = None
 #     
-README = ''
 LICENSE = ''
 
 setup(
     name = 'django-tapatalk',
-    version = '0.0.3',
+    version = '0.5.0',
     description='DjangoBB Tapatalk implementation',
     long_description=README,
     author = 'Sander van de Graaf',
