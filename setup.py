@@ -35,4 +35,5 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Environment :: Web Environment',
     ],
+    requires=["django-xmlrpc (>0.1.4)", ]
 )
