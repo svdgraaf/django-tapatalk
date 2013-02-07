@@ -1,15 +1,16 @@
 ===============
 django-tapatalk
 ===============
-Django tapatalk API implementation
+A DjangoBB Tapatalk API implementation
 
-Django tapatalk tries to implement all the v3 api calls for tapatalk. The default methods are for djangobb, but are easily extended to your own methods (see settings.py TAPATALK_METHODS for the mapping).
-
-If anything, you can use the tests to test out your implementation of the api.
+Django Tapatalk tries to implement all the v3 api calls for tapatalk. The default methods are for djangobb, but are easily extended to your own methods (see 'Customization' section, for the TAPATALK_METHODS mapping).
 
 Requirements
 ============
-[Djangobb-forum](http://djangobb.org/), [django-xmlrpc](http://pypi.python.org/pypi/django-xmlrpc). It's recommended that you also use [django-messages](http://code.google.com/p/django-messages/), if you want to use PM's out of the box (or provide your own implementation, see the 'settings' section).
+- Djangobb-forum <http://djangobb.org/>
+- Django-xmlrpc <http://pypi.python.org/pypi/django-xmlrpc>
+
+It's recommended that you also use django-messages (<http://code.google.com/p/django-messages/>), if you want to use PM's out of the box (or provide your own implementation, see the 'settings' section).
 
 Installation
 ============
