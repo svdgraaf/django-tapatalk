@@ -72,17 +72,6 @@ def get_forum(request, return_description=False, forum_id=''):
     return data
 
 
-def search_topic(request, search_string, start_num=0, last_num=None, search_id=''):
-    t = Topic.objects.filter(name__icontains=search_string)
-    topics = []
-    for topic in t:
-        topics.append(topic.as_tapatalk())
-    return {
-        'total_topic_num': len(topics),
-        'topics': topics,
-    }
-
-
 def get_online_users(request, page=0, perpage=20, id=None, area='forum'):
     users_cached = cache.get('djangobb_users_online', {})
     users_online = users_cached and User.objects.filter(id__in = users_cached.keys()) or []
