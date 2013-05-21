@@ -35,7 +35,7 @@ def topic_as_tapatalk(self):
     except:
         user = User.objects.get(username='archive')
 
-    avatar = get_avatar_for_user(self.user)
+    avatar = get_avatar_for_user(user)
 
     data = {
         'forum_id': str(self.forum.id),
