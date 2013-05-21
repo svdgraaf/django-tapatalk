@@ -17,7 +17,12 @@ def get_user(username):
 
 def get_avatar_for_user(user):
     # fix this to correct call from django_bb
-    avatar = user.profile.get_avatar()
+    avatar = None
+    try:
+        avatar = user.profile.get_avatar()
+    except:
+        pass
+
     if avatar == None:
         avatar = ''
 

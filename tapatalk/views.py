@@ -10,7 +10,6 @@ from dispatcher import TapatalkXMLRPCDispatcher, DjangoXMLRPCDispatcher
 
 # We create a local DEBUG variable from the data in settings.
 DEBUG = hasattr(settings, 'XMLRPC_DEBUG') and settings.XMLRPC_DEBUG
-DEBUG = True
 
 # Declare xmlrpcdispatcher correctly depending on our python version
 xmlrpcdispatcher = TapatalkXMLRPCDispatcher(allow_none=False, encoding=None)
@@ -40,7 +39,6 @@ def handle_xmlrpc(request, *args, **kwargs):
 if hasattr(settings, 'TAPATALK_METHODS'):
     for path, name in settings.TAPATALK_METHODS:
         # if "path" is actually a function, just add it without fuss
-        print path
         if callable(path):
             xmlrpcdispatcher.register_function(path, name)
             continue
