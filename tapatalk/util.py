@@ -30,6 +30,11 @@ def get_avatar_for_user(user):
 
 
 def topic_as_tapatalk(self):
+    try:
+        user = self.user
+    except:
+        user = User.objects.get(username='archive')
+
     avatar = get_avatar_for_user(self.user)
 
     data = {
@@ -43,8 +48,8 @@ def topic_as_tapatalk(self):
         'view_number': self.views,
         'can_post': True,
         'is_approved': True,
-        'topic_author_id': self.user.id,
-        'topic_author_name': xmlrpclib.Binary(self.user.username),
+        'topic_author_id': user.id,
+        'topic_author_name': xmlrpclib.Binary(user.username),
         'closed': self.closed,
     }
     if self.last_post:
