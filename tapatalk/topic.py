@@ -56,7 +56,7 @@ def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
         topics = topics.filter(sticky=True)
 
     if start_num != 0 or last_num != 0:
-        topics = topics[last_num:start_num]
+        topics = topics[start_num:last_num]
 
     data = {
         'total_topic_num': forum.topic_count,
