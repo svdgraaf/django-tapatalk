@@ -68,7 +68,9 @@ def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
         'topics': [],
     }
 
-    subscriptions = request.user.subscriptions.all()
+    subscriptions = []
+    if request.user.is_authenticated():
+        subscriptions = request.user.subscriptions.all()
 
     for topic in topics:
         t = topic.as_tapatalk()
