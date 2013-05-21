@@ -1,5 +1,6 @@
 from util import *
 import xmlrpclib
+from django.db.models import Q
 
 
 def get_config(request):
@@ -38,8 +39,14 @@ def get_config(request):
 
 
 def get_forum(request, return_description=False, forum_id=''):
-    # get categories
-    categories = Category.objects.all()
+    if request.user.is_authenticated():
+        user_groups = request.user.groups.all()
+    else:
+        user_groups = []
+
+    categories = Category.objects.all().filter(
+            Q(groups__in=user_groups) | \
+            Q(groups__isnull=True))
 
     # this will hold the result
     data = []
@@ -53,6 +60,7 @@ def get_forum(request, return_description=False, forum_id=''):
             'sub_only': True,
             'child': [],
         }
+
 
         # add all child forums to category
         fora = Forum.objects.filter(category=category)
