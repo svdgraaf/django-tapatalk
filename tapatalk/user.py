@@ -27,8 +27,8 @@ def login(request, login_name=None, password=None, anonymous=False, push='1'):
 
             return {
                 'result': True,
-                'user_id': user.id,
-                'username': user.username,
+                'user_id': str(user.id),
+                'username': xmlrpclib.Binary(user.username),
                 'usergroup_id': groups,
                 'post_count': user.forum_profile.post_count,
             }
@@ -85,8 +85,8 @@ def get_user_info(request, username='', user_id=None):
         pass
 
     data = {
-        'user_id': user.id,
-        'username': user.username,
+        'user_id': str(user.id),
+        'username': xmlrpclib.Binary(user.username),
         'post_count': user.posts.count(),
         'reg_time': xmlrpclib.DateTime(user.date_joined.isoformat()),
         'last_activity_time': xmlrpclib.DateTime(last_post.isoformat()),

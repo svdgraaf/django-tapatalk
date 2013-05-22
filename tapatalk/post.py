@@ -33,7 +33,7 @@ def get_thread(request, topic_id, start_num, last_num, return_html=True):
     return data
 
 
-def reply_post(request, forum_id, topic_id, subject='', text_body=''):
+def reply_post(request, forum_id, topic_id, subject='', text_body='', attachments=[], group_id='', return_html=False):
     p = Post()
     t = Topic.objects.get(pk=topic_id)
     p.user_id = request.user.id

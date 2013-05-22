@@ -45,10 +45,10 @@ def topic_as_tapatalk(self):
         'prefix': '',
         'icon_url': avatar,
         'reply_number': self.post_count,
-        'view_number': self.views,
+        'view_number': str(self.views),
         'can_post': True,
         'is_approved': True,
-        'topic_author_id': user.id,
+        'topic_author_id': str(user.id),
         'topic_author_name': xmlrpclib.Binary(user.username),
         'closed': self.closed,
     }
@@ -75,7 +75,7 @@ def post_as_tapatalk(self):
     data = {
         'post_id': str(self.id),
         'post_title': xmlrpclib.Binary(''),
-        'post_content': self.body,
+        'post_content': xmlrpclib.Binary(self.body),
         'forum_name': xmlrpclib.Binary(self.topic.forum.name),
         'forum_id': self.topic.forum.id,
         'topic_id': self.topic.id,
@@ -107,7 +107,7 @@ def message_as_tapatalk(self):
         online = False
 
     data = {
-        'msg_id': self.id,
+        'msg_id': str(self.id),
         'msg_state': state,
         'sent_date': xmlrpclib.DateTime(self.sent_at),
         'msg_from_id': self.sender.id,
