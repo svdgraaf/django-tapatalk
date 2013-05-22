@@ -5,7 +5,7 @@ from django.db.models import Q
 
 def get_config(request):
     return {
-        'version': 'vb40_3.9.4',
+        'version': 'vb40_4.5.1',
         'api_level': '3',  # level 3 for now
         'is_open': True,
         'guest_okay': True,
