@@ -87,8 +87,8 @@ def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
 def new_topic(request, forum_id, subject, text_body, prefix_id='', attachment_id_array=[], group_id=''):
     from djangobb_forum.models import Topic, Post
     t = Topic()
-    t.forum_id = forum_id
-    t.name = subject
+    t.forum_id = int(forum_id)
+    t.name = str(subject)
     t.user_id = request.user
     t.save()
 
