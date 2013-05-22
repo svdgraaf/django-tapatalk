@@ -12,7 +12,7 @@ def login(request, login_name=None, password=None, anonymous=False, push='1'):
         }
 
     # we have a username and password, let's try to login
-    user = authenticate(username=str(login_name), password=str(password)
+    user = authenticate(username=str(login_name), password=str(password))
 
     if user is not None:
         # we only deal with active users
