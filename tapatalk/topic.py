@@ -89,11 +89,11 @@ def new_topic(request, forum_id, subject, text_body, prefix_id='', attachment_id
     t = Topic()
     t.forum_id = int(forum_id)
     t.name = str(subject)
-    t.user_id = request.user
+    t.user_id = request.user.pk
     t.save()
 
     p = Post()
-    p.user_id = 1
+    p.user_id = request.user.pk
     p.topic_id = t.id
     p.body = str(text_body)
     p.save()
