@@ -23,7 +23,7 @@ def get_config(request):
         'goto_post': '1',
         'mark_read': '1',
         'mark_forum': '1',
-        'no_refresh_on_post': '1',
+        'no_refresh_on_post': '0',
         'subscribe_forum': '0',
         'disable_subscribe_forum': '1',
         'get_latest_topic': '1',
