@@ -60,7 +60,7 @@ def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
 
     data = {
         'total_topic_num': forum.topic_count,
-        'forum_id': forum_id,
+        'forum_id': str(forum_id),
         'forum_name': xmlrpclib.Binary(forum.name),
         'can_post': True,
         'can_upload': False,

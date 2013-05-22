@@ -77,8 +77,8 @@ def post_as_tapatalk(self):
         'post_title': xmlrpclib.Binary(''),
         'post_content': xmlrpclib.Binary(self.body),
         'forum_name': xmlrpclib.Binary(self.topic.forum.name),
-        'forum_id': self.topic.forum.id,
-        'topic_id': self.topic.id,
+        'forum_id': str(self.topic.forum.id),
+        'topic_id': str(self.topic.id),
         'topic_title': xmlrpclib.Binary(self.topic.name),
         'post_author_id': str(self.user.id),
         'post_author_name': xmlrpclib.Binary(self.user.username),
@@ -86,8 +86,8 @@ def post_as_tapatalk(self):
         'is_approved': True,
         'icon_url': avatar,
         'is_online': online,
-        'reply_number': self.topic.post_count,
-        'view_count': self.topic.views,
+        'reply_number': str(self.topic.post_count),
+        'view_count': str(self.topic.views),
         'short_content': xmlrpclib.Binary(self.body),
     }
 
