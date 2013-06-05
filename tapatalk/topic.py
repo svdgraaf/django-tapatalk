@@ -12,7 +12,11 @@ def get_unread_topic(request, start_num, last_num, search_id='', filters=[]):
 
 
 def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
-    topics = Topic.objects.all()[:2]
+    topics = Topic.objects.all()
+
+    if start_num != 0 or last_num != 0:
+        topics = topics[start_num:last_num]
+
     data = {
         'result': True,
         'topics': [],
