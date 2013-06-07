@@ -39,17 +39,26 @@ def get_participated_topic(request, user_name='', start_num=0, last_num=None, se
     tmp = []
     for post in posts:
         if post.topic.id not in tmp:
-                t = post.topic
-                topics.append(t.as_tapatalk())
-                tmp.append(t.id)
+                tmp.append(post.topic_id)
 
-    return {
+    topics = Topic.objects.filter(pk__in=tmp)
+
+    if start_num != 0 or last_num != 0:
+        topics = topics[start_num:last_num]
+
+    topic_set = []
+    for topic in topics:
+        topic_set.append(topic.as_tapatalk())
+
+    data = {
         'result': True,
         'search_id': search_id,
         'total_topic_num': len(topics),
         'total_unread_num': 0,  # TODO: make me work
-        'topics': topics,
+        'topics': topic_set,
     }
+    print data
+    return data
 
 
 def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):

@@ -27,7 +27,7 @@ def get_config(request):
         'subscribe_forum': '0',
         'disable_subscribe_forum': '1',
         'get_latest_topic': '1',
-        'get_id_by_url':'1',
+        'get_id_by_url':'0',
         'delete_reason': '1',
         'mod_approve': '0',
         'mod_delete': '0',

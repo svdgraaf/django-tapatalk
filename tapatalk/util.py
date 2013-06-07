@@ -75,7 +75,7 @@ def post_as_tapatalk(self):
     data = {
         'post_id': str(self.id),
         'post_title': xmlrpclib.Binary(''),
-        'post_content': xmlrpclib.Binary(self.body),
+        'post_content': xmlrpclib.Binary(self.body_html),
         'forum_name': xmlrpclib.Binary(self.topic.forum.name),
         'forum_id': str(self.topic.forum.id),
         'topic_id': str(self.topic.id),
