@@ -19,7 +19,7 @@ def get_config(request):
         'disable_bbcode': '0',
         'report_post': '0',
         'report_pm': '0',
-        'goto_unread': '1',
+        'goto_unread': '0',
         'goto_post': '1',
         'mark_read': '1',
         'mark_forum': '1',
