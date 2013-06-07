@@ -84,7 +84,9 @@ def get_forum(request, return_description=False, forum_id=''):
 
 
         # add all child forums to category
-        fora = Forum.objects.filter(parent_id=None).exclude(category_id=-1).filter(category__groups__isnull=True)
+        fora = Forum.objects.filter(parent_id=None).exclude(category_id=-1).filter(
+                    Q(category__groups__in=user_groups) | \
+                    Q(category__groups__isnull=True))
 
         for forum in fora:
             f = {
