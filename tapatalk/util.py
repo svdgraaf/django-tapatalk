@@ -54,9 +54,9 @@ def topic_as_tapatalk(self):
     }
     if self.last_post:
         data.update({
-            'short_content': xmlrpclib.Binary(self.last_post.body),
-            'last_reply_time': xmlrpclib.DateTime(self.last_post.created.isoformat()),
-            'post_time': xmlrpclib.DateTime(self.last_post.created.isoformat()),
+            'short_content': xmlrpclib.Binary(self.last_post.body_html[:100]),
+            'last_reply_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()) + '+01:00'),
+            'post_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()) + '+01:00'),
             'post_author_id': self.last_post.user.id,
             'post_author_name': xmlrpclib.Binary(self.last_post.user.username),
         })
@@ -75,20 +75,20 @@ def post_as_tapatalk(self):
     data = {
         'post_id': str(self.id),
         'post_title': xmlrpclib.Binary(''),
-        'post_content': xmlrpclib.Binary(self.body_html),
+        'post_content': xmlrpclib.Binary(self.body_html.strip()),
         'forum_name': xmlrpclib.Binary(self.topic.forum.name),
         'forum_id': str(self.topic.forum.id),
         'topic_id': str(self.topic.id),
         'topic_title': xmlrpclib.Binary(self.topic.name),
         'post_author_id': str(self.user.id),
         'post_author_name': xmlrpclib.Binary(self.user.username),
-        'post_time': xmlrpclib.DateTime(self.created.isoformat()),
+        'post_time': xmlrpclib.DateTime(str(self.created.isoformat() + '+01:00')),
         'is_approved': True,
         'icon_url': avatar,
         'is_online': online,
         'reply_number': str(self.topic.post_count),
         'view_count': str(self.topic.views),
-        'short_content': xmlrpclib.Binary(self.body),
+        # 'short_content': xmlrpclib.Binary(self.body_html[:100]),
     }
 
     return data
@@ -109,7 +109,7 @@ def message_as_tapatalk(self):
     data = {
         'msg_id': str(self.id),
         'msg_state': state,
-        'sent_date': xmlrpclib.DateTime(self.sent_at),
+        'sent_date': xmlrpclib.DateTime(str(self.sent_at) + '+01:00'),
         'msg_from_id': self.sender.id,
         'msg_from': xmlrpclib.Binary(self.sender.username),
         'icon_url': get_avatar_for_user(self.sender),
