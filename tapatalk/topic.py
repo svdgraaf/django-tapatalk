@@ -12,7 +12,7 @@ def get_unread_topic(request, start_num, last_num, search_id='', filters=[]):
 
 
 def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
-    topics = Topic.objects.all()
+    topics = Topic.objects.filter(forum__category__groups__isnull=True)
 
     if start_num != 0 or last_num != 0:
         topics = topics[start_num:last_num]
@@ -41,7 +41,7 @@ def get_participated_topic(request, user_name='', start_num=0, last_num=None, se
         if post.topic.id not in tmp:
                 tmp.append(post.topic_id)
 
-    topics = Topic.objects.filter(pk__in=tmp)
+    topics = Topic.objects.filter(pk__in=tmp).filter(forum__category__groups__isnull=True)
 
     if start_num != 0 or last_num != 0:
         topics = topics[start_num:last_num]
@@ -62,7 +62,7 @@ def get_participated_topic(request, user_name='', start_num=0, last_num=None, se
 
 
 def get_topic(request, forum_id, start_num=0, last_num=0, mode='DATE'):
-    topics = Topic.objects.filter(forum_id=forum_id)
+    topics = Topic.objects.filter(forum_id=forum_id).filter(forum__category__groups__isnull=True)
     forum = Forum.objects.get(pk=forum_id)
 
     if mode == 'TOP':
