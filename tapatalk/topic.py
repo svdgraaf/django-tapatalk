@@ -11,7 +11,7 @@ def get_unread_topic(request, start_num, last_num, search_id='', filters=[]):
     }
 
 
-def get_latest_topic(request, start_num, last_num, search_id='', filters=[]):
+def get_latest_topic(request, start_num=0, last_num=None, search_id='', filters=[]):
     topics = Topic.objects.filter(forum__category__groups__isnull=True)
 
     if start_num != 0 or last_num != 0:
