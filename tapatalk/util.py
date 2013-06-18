@@ -73,10 +73,12 @@ def post_as_tapatalk(self):
     if online == None:
         online = False
 
+    body = strip_tags(self.body_html.replace('<br />','\r\n')).strip()
+
     data = {
         'post_id': str(self.id),
         'post_title': xmlrpclib.Binary(''),
-        'post_content': xmlrpclib.Binary(self.body.strip()),
+        'post_content': xmlrpclib.Binary(body),
         'forum_name': xmlrpclib.Binary(self.topic.forum.name),
         'forum_id': str(self.topic.forum.id),
         'topic_id': str(self.topic.id),
