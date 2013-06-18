@@ -3,7 +3,9 @@ import xmlrpclib
 
 def get_thread(request, topic_id, start_num, last_num, return_html=True):
     topic = Topic.objects.get(pk=topic_id)
-    print topic
+
+    if request.user.is_authenticated():
+        topic.update_read(request.user)
 
     data = {
         'total_post_num': topic.post_count,
