@@ -1,32 +1,57 @@
 import xmlrpclib
 from util import *
+from django.db.models import Q
 
 
 def get_unread_topic(request, start_num, last_num, search_id='', filters=[]):
-    return {
+    data = {
         'result': True,
         'total_topic_num': 0,
         'topics': [],
         'forum_id': '',
     }
 
+    groups = request.user.groups.all() or [] #removed after django > 1.2.3
+    topics = Topic.objects.filter(
+                   Q(forum__category__groups__in=groups) | \
+                   Q(forum__category__groups__isnull=True))
 
-def get_latest_topic(request, start_num=0, last_num=None, search_id='', filters=[]):
-    topics = Topic.objects.filter(forum__category__groups__isnull=True)
+    try:
+        last_read = PostTracking.objects.get(user_id=request.user.pk).last_read
+    except PostTracking.DoesNotExist:
+        last_read = None
+    if last_read:
+        topics = topics.filter(Q(updated__gte=last_read) | Q(created__gte=last_read)).all()
+    else:
+        #searching more than forum_settings.SEARCH_PAGE_SIZE in this way - not good idea :]
+        topics = [topic for topic in topics[:forum_settings.SEARCH_PAGE_SIZE * 5] if forum_extras.has_unreads(topic, request.user)]
+
+    data['total_topic_num'] = len(topics)
 
     if start_num != 0 or last_num != 0:
         topics = topics[start_num:last_num]
+
+    for topic in topics:
+        data['topics'].append(topic.as_tapatalk())
+
+    return data
+
+
+def get_latest_topic(request, start_num=0, last_num=None, search_id='', filters=[]):
 
     data = {
         'result': True,
         'topics': [],
     }
+    topics = Topic.objects.filter(forum__category__groups__isnull=True)
+    data['total_topic_num'] = len(topics)
+
+    if start_num != 0 or last_num != 0:
+        topics = topics[start_num:last_num]
 
     for t in topics:
         data['topics'].append(t.as_tapatalk())
 
-    data['total_topic_num'] = len(data['topics'])
-    data['total_unread_num'] = 0
     return data
 
 
@@ -54,7 +79,6 @@ def get_participated_topic(request, user_name='', start_num=0, last_num=None, se
         'result': True,
         'search_id': search_id,
         'total_topic_num': len(topics),
-        'total_unread_num': 0,  # TODO: make me work
         'topics': topic_set,
     }
     print data
