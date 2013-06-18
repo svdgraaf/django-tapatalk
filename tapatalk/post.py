@@ -23,6 +23,10 @@ def get_thread(request, topic_id, start_num, last_num, return_html=True):
     }
 
     posts = Post.objects.filter(topic=topic)
+
+    if start_num != 0 or last_num != 0:
+        posts = posts[start_num:last_num]
+
     for post in posts:
         p = post.as_tapatalk()
 

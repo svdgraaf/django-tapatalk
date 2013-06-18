@@ -1,9 +1,11 @@
 from djangobb_forum.models import *
 from django.core.cache import cache
 from django_messages.models import Message
+from django.utils.encoding import smart_unicode
 import xmlrpclib
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User
+from .lib import html2markdown
 
 
 def get_user(username):
@@ -42,7 +44,7 @@ def topic_as_tapatalk(self):
         'forum_id': str(self.forum.id),
         'forum_name': xmlrpclib.Binary(self.forum.name),
         'topic_id': str(self.id),
-        'topic_title': xmlrpclib.Binary(self.name),
+        'topic_title': xmlrpclib.Binary(smart_unicode(self.name)),
         'prefix': '',
         'icon_url': avatar,
         'reply_number': self.post_count,
@@ -54,8 +56,9 @@ def topic_as_tapatalk(self):
         'closed': self.closed,
     }
     if self.last_post:
+        body = html2markdown(smart_unicode(self.last_post.body_html))
         data.update({
-            'short_content': xmlrpclib.Binary(strip_tags(self.last_post.body_html)[:100]),
+            'short_content': xmlrpclib.Binary(body[:100]),
             'last_reply_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()).replace('-','') + '+01:00'),
             'post_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()).replace('-','') + '+01:00'),
             'post_author_id': self.last_post.user.id,
@@ -73,7 +76,7 @@ def post_as_tapatalk(self):
     if online == None:
         online = False
 
-    body = strip_tags(self.body_html.replace('<br />','\r\n')).strip()
+    body = html2markdown(smart_unicode(self.body_html))
 
     data = {
         'post_id': str(self.id),
@@ -129,7 +132,6 @@ def message_as_tapatalk(self):
     }
 
     return data
-
 
 # ugh, monkey patching
 Topic.as_tapatalk = topic_as_tapatalk
