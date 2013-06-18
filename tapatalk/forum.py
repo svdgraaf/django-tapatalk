@@ -98,6 +98,21 @@ def get_forum(request, return_description=False, forum_id=''):
                 'can_post': True,
             }
 
+            childs = Forum.objects.filter(parent_id=forum.pk).filter(
+                    Q(category__groups__in=user_groups) | \
+                    Q(category__groups__isnull=True))
+
+            for child in childs:
+                c = {
+                    'forum_id': str(child.id),
+                    'forum_name': xmlrpclib.Binary(child.name),
+                    'parent_id': str(forum.id),
+                    'sub_only': False,
+                    'can_post': True,
+                }
+
+                f['child'].append(c)
+
             cat['child'].append(f)
 
         data.append(cat)
