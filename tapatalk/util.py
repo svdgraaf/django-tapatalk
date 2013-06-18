@@ -54,7 +54,7 @@ def topic_as_tapatalk(self):
     }
     if self.last_post:
         data.update({
-            'short_content': xmlrpclib.Binary(self.last_post.body_html[:100]),
+            'short_content': xmlrpclib.Binary(self.last_post.body[:100]),
             'last_reply_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()).replace('-','') + '+01:00'),
             'post_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()).replace('-','') + '+01:00'),
             'post_author_id': self.last_post.user.id,

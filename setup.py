@@ -6,16 +6,16 @@ try:
 except:
     README = None
 
-# try: 
+# try:
 #     LICENSE = open('LICENSE.txt').read()
-# except: 
+# except:
 #     LICENSE = None
-#     
+#
 LICENSE = ''
 
 setup(
     name = 'django-tapatalk',
-    version = '0.5.6',
+    version = '0.5.8',
     description='DjangoBB Tapatalk implementation',
     long_description=README,
     author = 'Sander van de Graaf',
