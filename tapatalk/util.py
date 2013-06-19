@@ -123,16 +123,16 @@ def message_as_tapatalk(self):
         'msg_state': state,
         'sent_date': xmlrpclib.DateTime(str(self.sent_at).replace('-','') + '+01:00'),
         'msg_from_id': self.sender.id,
-        'msg_from': xmlrpclib.Binary(self.sender.username),
-        'icon_url': get_avatar_for_user(self.sender),
-        'msg_subject': xmlrpclib.Binary(self.subject),
-        'short_content': xmlrpclib.Binary(self.body),
+        'msg_from': xmlrpclib.Binary(self.sender.username.encode('utf-8')),
+        'icon_url': get_avatar_for_user(self.sender.encode('utf-8')),
+        'msg_subject': xmlrpclib.Binary(self.subject.encode('utf-8')),
+        'short_content': xmlrpclib.Binary(self.body.encode('utf-8')),
         'is_online': online,
-        'text_body': xmlrpclib.Binary(self.body),
+        'text_body': xmlrpclib.Binary(self.body.encode('utf-8')),
         'msg_to': [
             {
                 'user_id': self.recipient.id,
-                'username': xmlrpclib.Binary(self.recipient.username),
+                'username': xmlrpclib.Binary(self.recipient.usernam.encode('utf-8')e),
             }
         ],
     }

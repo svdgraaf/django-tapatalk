@@ -77,7 +77,7 @@ def get_forum(request, return_description=False, forum_id=''):
     for category in categories:
         cat = {
             'forum_id': str(category.id),
-            'forum_name': xmlrpclib.Binary(category.name),
+            'forum_name': xmlrpclib.Binary(category.name.encode('utf-8')),
             'parent_id': '-1',
             'sub_only': True,
             'child': [],
@@ -92,7 +92,7 @@ def get_forum(request, return_description=False, forum_id=''):
         for forum in fora:
             f = {
                 'forum_id': str(forum.id),
-                'forum_name': xmlrpclib.Binary(forum.name),
+                'forum_name': xmlrpclib.Binary(forum.name.encode('utf-8')),
                 'parent_id': str(category.id),
                 'sub_only': False,
                 'child': [],
@@ -106,7 +106,7 @@ def get_forum(request, return_description=False, forum_id=''):
             for child in childs:
                 c = {
                     'forum_id': str(child.id),
-                    'forum_name': xmlrpclib.Binary(child.name),
+                    'forum_name': xmlrpclib.Binary(child.name.encode('utf-8')),
                     'parent_id': str(forum.id),
                     'sub_only': False,
                     'can_post': True,
@@ -135,8 +135,8 @@ def get_online_users(request, page=0, perpage=20, id=None, area='forum'):
         avatar = get_avatar_for_user(user)
         u = {
             'user_id': user.id,
-            'username': xmlrpclib.Binary(user.username),
-            'user_name': xmlrpclib.Binary(user.username),
+            'username': xmlrpclib.Binary(user.username.encode('utf-8')),
+            'user_name': xmlrpclib.Binary(user.username.encode('utf-8')),
             'icon_url': avatar,
             'display_text': '',
         }
