@@ -132,7 +132,7 @@ def message_as_tapatalk(self):
         'msg_to': [
             {
                 'user_id': self.recipient.id,
-                'username': xmlrpclib.Binary(self.recipient.usernam.encode('utf-8')e),
+                'username': xmlrpclib.Binary(self.recipient.username.encode('utf-8')),
             }
         ],
     }
