@@ -1,11 +1,12 @@
 from djangobb_forum.models import *
 from django.core.cache import cache
 from django_messages.models import Message
+import HTMLParser
 from django.utils.encoding import smart_unicode
 import xmlrpclib
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User
-from .lib import html2markdown
+from .lib import html2markdown, replace_tags
 
 
 def get_user(username):
@@ -42,9 +43,9 @@ def topic_as_tapatalk(self):
 
     data = {
         'forum_id': str(self.forum.id),
-        'forum_name': xmlrpclib.Binary(self.forum.name),
+        'forum_name': xmlrpclib.Binary(self.forum.name.encode('utf-8')),
         'topic_id': str(self.id),
-        'topic_title': xmlrpclib.Binary(smart_unicode(self.name)),
+        'topic_title': xmlrpclib.Binary(smart_unicode(self.name).encode('utf-8')),
         'prefix': '',
         'icon_url': avatar,
         'reply_number': self.post_count,
@@ -52,17 +53,18 @@ def topic_as_tapatalk(self):
         'can_post': True,
         'is_approved': True,
         'topic_author_id': str(user.id),
-        'topic_author_name': xmlrpclib.Binary(user.username),
+        'topic_author_name': xmlrpclib.Binary(user.username.encode('utf-8')),
         'closed': self.closed,
     }
     if self.last_post:
-        body = html2markdown(smart_unicode(self.last_post.body_html))
+        h = HTMLParser.HTMLParser()
+        body = h.unescape(replace_tags(self.last_post.body)).encode('utf-8')
         data.update({
             'short_content': xmlrpclib.Binary(body[:100]),
             'last_reply_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()).replace('-','') + '+01:00'),
             'post_time': xmlrpclib.DateTime(str(self.last_post.created.isoformat()).replace('-','') + '+01:00'),
             'post_author_id': self.last_post.user.id,
-            'post_author_name': xmlrpclib.Binary(self.last_post.user.username),
+            'post_author_name': xmlrpclib.Binary(self.last_post.user.username.encode('utf-8')),
         })
 
     return data
@@ -76,18 +78,22 @@ def post_as_tapatalk(self):
     if online == None:
         online = False
 
-    body = html2markdown(smart_unicode(self.body_html))
+    h = HTMLParser.HTMLParser()
+    body = h.unescape(replace_tags(self.body)).encode('utf-8')
+    # try:
+    # body = html2markdown(smart_unicode(self.body_html))
+    # except:
 
     data = {
         'post_id': str(self.id),
         'post_title': xmlrpclib.Binary(''),
         'post_content': xmlrpclib.Binary(body),
-        'forum_name': xmlrpclib.Binary(self.topic.forum.name),
+        'forum_name': xmlrpclib.Binary(self.topic.forum.name.encode('utf-8')),
         'forum_id': str(self.topic.forum.id),
         'topic_id': str(self.topic.id),
-        'topic_title': xmlrpclib.Binary(self.topic.name),
+        'topic_title': xmlrpclib.Binary(self.topic.name.encode('utf-8')),
         'post_author_id': str(self.user.id),
-        'post_author_name': xmlrpclib.Binary(self.user.username),
+        'post_author_name': xmlrpclib.Binary(self.user.username.encode('utf-8')),
         'post_time': xmlrpclib.DateTime(str(self.created.isoformat().replace('-','') + '+01:00')),
         'is_approved': True,
         'icon_url': avatar,

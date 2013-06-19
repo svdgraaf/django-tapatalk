@@ -44,7 +44,7 @@ def get_latest_topic(request, start_num=0, last_num=None, search_id='', filters=
         'topics': [],
     }
     topics = Topic.objects.filter(forum__category__groups__isnull=True)
-    data['total_topic_num'] = len(topics)
+    data['total_topic_num'] = 43437
 
     if start_num != 0 or last_num != 0:
         topics = topics[start_num:last_num]

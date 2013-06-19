@@ -9,9 +9,10 @@ def get_config(request):
         'is_open': True,
         'guest_okay': True,
         'push': '0',
-        'api_level': '4',  # level 3 for now
+        'api_level': '3',  # level 3 for now
         'reg_url': '/',
-        'version': 'vb40_4.5.1',
+        # 'version': 'vb40_4.5.1',
+        'version': 'pb30_3.8.1',
         'hide_forum_id': '',
         'forum_signature': '0',
         'support_md5': '0',
@@ -54,7 +55,7 @@ def get_config(request):
         'alert': '0',
         'push_type': 'quote',
         'min_search_length': '3',
-        'charset': 'utf-8',
+        # 'charset': 'utf-8',
         'advanced_delete': '0',
     }
 

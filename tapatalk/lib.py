@@ -170,3 +170,38 @@ def html2markdown(html):
     p.feed(html)
     p.close()
     return p.get_markdown()
+
+
+
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys, os
+import re
+import glob
+
+_replacements_dict = {
+    '\[B\]': '**',
+    '\[\/B\]': '**',
+    '\[I\]': '//',
+    '\[\/I\]': '//',
+    # '\[IMG\]' : '{{',
+    # '\[\/IMG\]' : '}}',
+    # '\[URL=(.*?)\]\s*(.*?)\s*\[\/URL\]' : r'[[\1|\2]]',
+    # '\[URL\]\s*(.*?)\s*\[\/URL\]' : r'[[\1]]',
+    '\[FONT=(.*?)\]' : '',
+    '\[color=(.*?)\]' : '',
+    '\[SIZE=(.*?)\]' : '',
+    '\[CENTER]' : '',
+    '\[\/CENTER]' : '',
+    '\[\/FONT\]' : '',
+    '\[\/color\]' : '',
+    '\[\/size\]' : '',
+}
+_replacements, _subs = zip(*_replacements_dict.items())
+
+def replace_tags(text):
+    for i, _s in enumerate(_replacements):
+        tag_re = re.compile(r''+_s,  re.I)
+        text, n = tag_re.subn(r''+_subs[i], text)
+    return text
