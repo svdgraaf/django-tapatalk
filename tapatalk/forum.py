@@ -40,7 +40,7 @@ def get_config(request):
         'emoji': '1',
         'searchid': '1',
         'avatar': '1',
-        'multi_quote': '1',
+        'multi_quote': '0',
         'inbox_stat': '0',
         'user_id': '1',
         'get_forum': '1',
