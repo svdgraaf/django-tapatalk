@@ -42,6 +42,12 @@ def get_thread(request, topic_id, start_num, last_num, return_html=True):
 def reply_post(request, forum_id, topic_id, subject='', text_body='', attachments=[], group_id='', return_html=False):
     p = Post()
     t = Topic.objects.get(pk=topic_id)
+    if t.closed:
+        return {
+            'result': False,
+            'post_id': str(p.id),
+        }
+
     p.user_id = request.user.id
     p.body = str(text_body)
     p.topic = t

@@ -40,6 +40,7 @@ def topic_as_tapatalk(self):
         user = User.objects.get(username='archive')
 
     avatar = get_avatar_for_user(user)
+    can_post = not self.closed
 
     data = {
         'forum_id': str(self.forum.id),
@@ -50,7 +51,7 @@ def topic_as_tapatalk(self):
         'icon_url': avatar,
         'reply_number': self.post_count,
         'view_number': str(self.views),
-        'can_post': True,
+        'can_post': can_post,
         'is_approved': True,
         'topic_author_id': str(user.id),
         'topic_author_name': xmlrpclib.Binary(user.username.encode('utf-8')),
